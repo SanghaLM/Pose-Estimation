@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import os, errno
 import sys
 import requests
@@ -13,8 +10,8 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-videopath = 'C:/Users/ypyp0/Desktop/video/1.mp4'
-output = 'C:/Users/ypyp0/Desktop/frames/frames_in/'
+videopath = 'YOUR_VIDEO_PATH'
+output = 'YOUR_FRAME_HOLD_PATH'
 def framemake():
     cap = cv2.VideoCapture(videopath)
     global count
@@ -34,11 +31,11 @@ if __name__ == '__main__':
     framemake()
 
 for i in range(1, count):
-    client_id = "n9gq68c08x"
-    client_secret = "0qnrujQqjcOX70MCr2AqiS4LCuA4riU0ZTO7mMjd"
+    client_id = "YOUR_CLIENT_ID"
+    client_secret = "YOUR_CLIENT_SECRET"
     url = "https://naveropenapi.apigw.ntruss.com/vision-pose/v1/estimate"
     headers = {'X-NCP-APIGW-API-KEY-ID': client_id, 'X-NCP-APIGW-API-KEY': client_secret}
-    filepath = 'C:/Users/ypyp0/Desktop/frames/frames_in/{}.jpg'.format(i)
+    filepath = output + "{}.jpg".format(i)
     files = {'image': open(filepath, 'rb')}
     response = requests.post(url,  files=files, headers=headers)
     rescode = response.status_code
@@ -78,9 +75,9 @@ for i in range(1, count):
     plt.axis('off'), plt.xticks([]), plt.yticks([])
     plt.tight_layout()
     fig = plt.gcf()
-    fig.savefig('C:/Users/ypyp0/Desktop/frames/frames_out/{}.png'.format(i), bbox_inches = "tight")
+    fig.savefig('YOUR_FRAME_WITH_POINT_PATH/{}.png'.format(i), bbox_inches = "tight")
     
-frame = 'C:/Users/ypyp0/Desktop/frames/frames_out/'
+frame = 'YOUR_FRAME_WITH_POINT_PATH/'
 def main():
     try:
         if(os.path.isdir(frame)):
@@ -98,7 +95,7 @@ def main():
                             frame_height = cur_img.shape[0]
                             frame_width = cur_img.shape[1]
                             
-                            video_file= os.path.join('C:/Users/ypyp0/Desktop/video/', 'pose_estimation.avi')
+                            video_file= os.path.join('YOUR_VIDEO_OUTPUT_PATH', 'YOUR_VIDEO_NAME.avi')
                             out = cv2.VideoWriter(video_file, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
                         
                         out.write(cur_img)
@@ -113,17 +110,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-                            
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
