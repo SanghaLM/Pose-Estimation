@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 videopath = 'YOUR_VIDEO_PATH'
 output = 'YOUR_FRAME_HOLD_PATH'
+
 def framemake():
     cap = cv2.VideoCapture(videopath)
     global count
@@ -26,7 +27,6 @@ def framemake():
         count += 1
     print("{} images are extracted in {}.".format(count - 1, output))
     
-
 if __name__ == '__main__':
     framemake()
 
@@ -39,16 +39,19 @@ for i in range(1, count):
     files = {'image': open(filepath, 'rb')}
     response = requests.post(url,  files=files, headers=headers)
     rescode = response.status_code
+    
     if(rescode==200):
         rt = response.text
     else:
         print("Error Code: " + str(rescode))
+        
     json_data = json.loads(response.text)
     dlist = json_data.values()
     data = ' '.join([str(a) for a in dlist])
     data_list = data.split(',')
     x = []
     y = []
+    
     for a in data_list:
         if 'x' in a:
             x.append(round(float(a[6:-2]),4))
@@ -70,6 +73,7 @@ for i in range(1, count):
     new_y = []
     new_x = [x * width for x in x]
     new_y = [y * height for y in y]
+    
     plt.scatter(new_x ,new_y , c = 'y', s = 7)
     plt.imshow(right_img)
     plt.axis('off'), plt.xticks([]), plt.yticks([])
@@ -78,11 +82,11 @@ for i in range(1, count):
     fig.savefig('YOUR_FRAME_WITH_POINT_PATH/{}.png'.format(i), bbox_inches = "tight")
     
 frame = 'YOUR_FRAME_WITH_POINT_PATH/'
+
 def main():
     try:
         if(os.path.isdir(frame)):
             for roots, dirs, files in os.walk(frame, topdown = False):
-                
                 bIsFirst = True
                 for name in files:
                     cur_file = os.path.join(frame, name)
@@ -94,12 +98,9 @@ def main():
                         if (bIsFirst):
                             frame_height = cur_img.shape[0]
                             frame_width = cur_img.shape[1]
-                            
                             video_file= os.path.join('YOUR_VIDEO_OUTPUT_PATH', 'YOUR_VIDEO_NAME.avi')
                             out = cv2.VideoWriter(video_file, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
-                        
                         out.write(cur_img)
-                    
                     bIsFirst = False
    
     except OSError as e:
